@@ -5,8 +5,8 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_movie"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
     <!-- Empty view is only visible when the list has no items. -->
     <TextView
         android:id="@+id/tv_empty_view"
