@@ -7,7 +7,7 @@
         android:id="@+id/rv_movie"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
-    <!-- Empty view is only visible when the list has no items. -->
+    <!-- Empty view is only visible when the list has no items / no internet. -->
     <TextView
         android:id="@+id/tv_empty_view"
         android:layout_width="wrap_content"

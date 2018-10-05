@@ -20,7 +20,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>>, MoviesAdapter.ListItemClickListener {
     private static final int NUM_LIST_COLUMNS = 2;
 
-    private MoviesAdapter mAdapter;
     private RecyclerView mMovieList;
     /**
      * Constant value for the Movies loader ID. We can choose any integer.
@@ -132,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             emptyView.setVisibility(View.VISIBLE);
 
         } else {
-            mAdapter = new MoviesAdapter(this, data, this);
+            MoviesAdapter mAdapter = new MoviesAdapter(this, data, this);
             mMovieList.setAdapter(mAdapter);
         }
 

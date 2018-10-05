@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,9 @@ import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
     private static final String TAG = MoviesAdapter.class.getSimpleName();
-    private static int viewHolderCount;
     private List mMovieList;
     final private ListItemClickListener mOnClickListener;
-    Context context;
+    private Context context;
 
     /**
      * The interface that receives onClick messages.
@@ -31,7 +29,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public MoviesAdapter(Context context,List<Movie> movieList, ListItemClickListener listener) {
         mMovieList = movieList;
         mOnClickListener = listener;
-        viewHolderCount = 0;
         this.context=context;
     }
 
@@ -45,14 +42,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
         MovieViewHolder viewHolder = new MovieViewHolder(view);
-        viewHolderCount++;
-        Log.d(TAG, "onCreateViewHolder: number of ViewHolders created: "
-                + viewHolderCount);
         return viewHolder;    }
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        holder.bind(holder,position);
+        holder.bind(position);
     }
 
     @Override
@@ -74,7 +68,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
          */
 
 
-        void bind(MovieViewHolder viewHolder,int listIndex) {
+        void bind(int listIndex) {
             Movie currentMovie =(Movie) mMovieList.get(listIndex);
             // Build the image url
             String baseUrl = "http://image.tmdb.org/t/p/w185";
