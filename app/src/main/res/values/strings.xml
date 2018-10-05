@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">MoviesApp</string>
+    <string name="no_data">No Data Found</string>
+    <!-- Text to display in the list when there are no internet [CHAR LIMIT=NONE] -->
+    <string name="no_internet_connection">No Internet Connection</string>
+
+    <!-- Settings Menu Item [CHAR LIMIT=NONE] -->
+    <string name="most_popular_menu_item">by most popular</string>
+    <string name="most_popular_menu_item_val" translatable="false">"popular"</string>
+
+    <string name="highest_rated_menu_item">by highest rated</string>
+    <string name="highest_rated_menu_item_val" translatable="false">"top_rated"</string>
+
+    <string name="order_by_menu_item">order by</string>
+
+
+    <!-- Strings For default section Preference [CHAR LIMIT=30] -->
+    <string name="settings_def_section_label">Default Section</string>
+    <string name="settings_def_section_key" translatable="false">def_section</string>
+    <string name="settings_def_section_default" translatable="false">"popular"</string>
+
+
+    <string name="original_title">Original Title</string>
+    <string name="a_plot_synopsis">A plot Synopsis</string>
+    <string name="user_rating">User Rating</string>
+    <string name="release_date">Release Date</string>
+    <string name="movie_poster">MoviePoster</string>
+</resources>
