@@ -1,7 +1,6 @@
 package com.example.android.az.moviesapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,17 +18,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     final private ListItemClickListener mOnClickListener;
     private Context context;
 
-    /**
-     * The interface that receives onClick messages.
-     */
-    public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
-    }
-
-    public MoviesAdapter(Context context,List<Movie> movieList, ListItemClickListener listener) {
+    public MoviesAdapter(Context context, List<Movie> movieList, ListItemClickListener listener) {
         mMovieList = movieList;
         mOnClickListener = listener;
-        this.context=context;
+        this.context = context;
     }
 
     @NonNull
@@ -42,7 +34,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
         MovieViewHolder viewHolder = new MovieViewHolder(view);
-        return viewHolder;    }
+        return viewHolder;
+    }
+
+    /**
+     * The interface that receives onClick messages.
+     */
+    public interface ListItemClickListener {
+        void onListItemClick(Movie currentMovie);
+    }
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
@@ -56,41 +56,36 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView posterImage;
+
         public MovieViewHolder(View itemView) {
             super(itemView);
-            posterImage =  itemView.findViewById(R.id.iv_movie_image);
+            posterImage = itemView.findViewById(R.id.iv_movie_image);
             itemView.setOnClickListener(this);
         }
+
         /**
          * A method we wrote for convenience. This method will take an integer as input and
          * use that integer to display the appropriate text within a list item.
+         *
          * @param listIndex Position of the item in the list
          */
 
 
         void bind(int listIndex) {
-            Movie currentMovie =(Movie) mMovieList.get(listIndex);
+            Movie currentMovie = (Movie) mMovieList.get(listIndex);
             // Build the image url
             String baseUrl = "http://image.tmdb.org/t/p/w185";
             String posterAddress = currentMovie.getmPosterImageThumbnail();
             String url = baseUrl + posterAddress;
 
             // Display the PosterImageThumbnail of the current movie in that ImageView
-            Picasso.with(context).load(url).into(posterImage);        }
+            Picasso.with(context).load(url).into(posterImage);
+        }
 
 
         @Override
         public void onClick(View v) {
-            mOnClickListener.onListItemClick(getAdapterPosition());
-            // Find the current movie that was clicked on
-            Movie currentMovie = (Movie) mMovieList.get(getAdapterPosition());
-            // Create a new intent to view the movie
-            Intent intent = new Intent(context, DetailMovieActivity.class);
-            //add the data with putExtra to send it to DetailMovieActivity
-            intent.putExtra("movieParcelable", currentMovie);
-            // Send the intent to launch a new activity
-            context.startActivity(intent);
-
+            mOnClickListener.onListItemClick((Movie) mMovieList.get(getAdapterPosition()));
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.android.az.moviesapp;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -165,7 +166,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onListItemClick(int clickedItemIndex) {
-
+    public void onListItemClick(Movie currentMovie) {
+        // Create a new intent to view the movie
+        Intent intent = new Intent(this, DetailMovieActivity.class);
+        //add the data with putExtra to send it to DetailMovieActivity
+        intent.putExtra("movieParcelable", currentMovie);
+        // Send the intent to launch a new activity
+        startActivity(intent);
     }
 }
