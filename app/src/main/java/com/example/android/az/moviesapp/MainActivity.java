@@ -132,7 +132,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             emptyView.setVisibility(View.VISIBLE);
 
         } else {
-            MoviesAdapter mAdapter = new MoviesAdapter(this, data, this);
+            MoviesAdapter mAdapter = new MoviesAdapter(this, this);
+            mAdapter.setmMovieList(data);
             mMovieList.setAdapter(mAdapter);
         }
 

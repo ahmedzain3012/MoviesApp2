@@ -63,6 +63,8 @@ public final class QueryUtils {
 
                 // Get a single movie at position i within the list of movies
                 JSONObject currentMovie = resultArray.getJSONObject(i);
+                // Extract the value for the key called "id"
+                int id = currentMovie.getInt("id");
                 // Extract the value for the key called "originalTitle"
                 String originalTitle = currentMovie.getString("original_title");
                 // Extract the value for the key called "releaseDate"
@@ -75,7 +77,7 @@ public final class QueryUtils {
                 String userRating = currentMovie.getString("vote_average");
                 // Create a new {@link Movie} object with the mOriginalTitle, mReleaseDate, mPosterImageThumbnail,mAPlotSynopsis
                 // and mUserRating from the JSON movie.
-                Movie movies = new Movie(originalTitle,releaseDate,posterImageThumbnail,aPlotSynopsis,userRating);
+                Movie movies = new Movie(id,originalTitle,releaseDate,posterImageThumbnail,aPlotSynopsis,userRating);
                 // Add the new {@link Movie} to the list of movies.
                 moviesList.add(movies);
             }

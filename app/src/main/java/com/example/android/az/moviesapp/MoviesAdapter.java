@@ -14,14 +14,17 @@ import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
     private static final String TAG = MoviesAdapter.class.getSimpleName();
-    private List mMovieList;
+    private List<Movie> mMovieList;
     final private ListItemClickListener mOnClickListener;
     private Context context;
 
-    public MoviesAdapter(Context context, List<Movie> movieList, ListItemClickListener listener) {
-        mMovieList = movieList;
+    public MoviesAdapter(Context context, ListItemClickListener listener) {
         mOnClickListener = listener;
         this.context = context;
+    }
+
+    public void setmMovieList(List<Movie> mMovieList) {
+        this.mMovieList = mMovieList;
     }
 
     @NonNull
