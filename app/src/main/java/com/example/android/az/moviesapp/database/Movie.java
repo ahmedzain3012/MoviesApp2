@@ -1,9 +1,13 @@
-package com.example.android.az.moviesapp;
+package com.example.android.az.moviesapp.database;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+@Entity(tableName = "movie")
 public class Movie implements Parcelable {
+    @PrimaryKey
     private int    mId;
     private String mOriginalTitle;
     private String mReleaseDate;
@@ -44,35 +48,35 @@ public class Movie implements Parcelable {
         mFav = in.readInt();
     }
 
-    public int getmId() {
+    public int getMId() {
         return mId;
     }
 
-    public String getmOriginalTitle() {
+    public String getMOriginalTitle() {
         return mOriginalTitle;
     }
 
-    public String getmReleaseDate() {
+    public String getMReleaseDate() {
         return mReleaseDate;
     }
 
-    public String getmPosterImageThumbnail() {
+    public String getMPosterImageThumbnail() {
         return mPosterImageThumbnail;
     }
 
-    public String getmAPlotSynopsis() {
+    public String getMAPlotSynopsis() {
         return mAPlotSynopsis;
     }
 
-    public String getmUserRating() {
+    public String getMUserRating() {
         return mUserRating;
     }
 
-    public int getmFav() {
+    public int getMFav() {
         return mFav;
     }
 
-    public void setmFav(int mFav) {
+    public void setMFav(int mFav) {
         this.mFav = mFav;
     }
 

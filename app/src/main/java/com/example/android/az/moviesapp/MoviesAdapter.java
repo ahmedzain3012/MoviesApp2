@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.android.az.moviesapp.database.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -78,7 +79,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             Movie currentMovie = (Movie) mMovieList.get(listIndex);
             // Build the image url
             String baseUrl = "http://image.tmdb.org/t/p/w185";
-            String posterAddress = currentMovie.getmPosterImageThumbnail();
+            String posterAddress = currentMovie.getMPosterImageThumbnail();
             String url = baseUrl + posterAddress;
 
             // Display the PosterImageThumbnail of the current movie in that ImageView

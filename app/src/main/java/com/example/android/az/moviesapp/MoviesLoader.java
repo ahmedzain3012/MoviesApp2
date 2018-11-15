@@ -3,6 +3,8 @@ package com.example.android.az.moviesapp;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
+import com.example.android.az.moviesapp.database.Movie;
+
 import java.util.List;
 
 public class MoviesLoader extends AsyncTaskLoader<List<Movie>> {

@@ -3,6 +3,8 @@ package com.example.android.az.moviesapp;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.android.az.moviesapp.database.Movie;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

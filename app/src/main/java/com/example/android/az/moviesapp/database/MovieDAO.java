@@ -13,15 +13,18 @@ import java.util.List;
 public interface MovieDAO {
 
     @Query("SELECT * FROM movie")
-    List<MovieEntry> loadAllMovie();
+    List<Movie> loadAllMovie();
 
     @Insert
-    void insertMovie(MovieEntry movie);
+    void insertMovie(Movie movie);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateMovie(MovieEntry movie);
+    void updateMovie(Movie movie);
 
     @Delete
-    void deleteMovie(MovieEntry movie);
+    void deleteMovie(Movie movie);
+
+    @Query("SELECT * FROM movie WHERE mid = :id")
+    Movie loadMovieById(int id);
 
 }

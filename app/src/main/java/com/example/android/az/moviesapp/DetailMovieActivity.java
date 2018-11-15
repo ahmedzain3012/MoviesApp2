@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.az.moviesapp.database.AppDatabase;
-import com.example.android.az.moviesapp.database.MovieEntry;
+import com.example.android.az.moviesapp.database.Movie;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -32,6 +32,8 @@ public class DetailMovieActivity extends AppCompatActivity {
 
     private AppDatabase mDb;
     private Movie currentMovie;
+    private Movie currentMovieDB;
+
 
 
     @Override
@@ -45,54 +47,47 @@ public class DetailMovieActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("movieParcelable")) {
             currentMovie = intent.getParcelableExtra("movieParcelable");
-            if (currentMovie.getmOriginalTitle() != null || !currentMovie.getmOriginalTitle().isEmpty()) {
-                mOriginalTitle.setText(currentMovie.getmOriginalTitle());
+            if (currentMovie.getMOriginalTitle() != null || !currentMovie.getMOriginalTitle().isEmpty()) {
+                mOriginalTitle.setText(currentMovie.getMOriginalTitle());
             }
-            if (currentMovie.getmPosterImageThumbnail() != null || !currentMovie.getmPosterImageThumbnail().isEmpty()) {
+            if (currentMovie.getMPosterImageThumbnail() != null || !currentMovie.getMPosterImageThumbnail().isEmpty()) {
                 String baseUrl = "http://image.tmdb.org/t/p/w185";
-                String posterAddress = currentMovie.getmPosterImageThumbnail();
+                String posterAddress = currentMovie.getMPosterImageThumbnail();
                 String url = baseUrl + posterAddress;
                 Picasso.with(this).
                         load(url).
                         into(mPosterImageThumbnail);
             }
-            if (currentMovie.getmAPlotSynopsis() != null || !currentMovie.getmAPlotSynopsis().isEmpty()) {
-                mAPlotSynopsis.setText(currentMovie.getmAPlotSynopsis());
+            if (currentMovie.getMAPlotSynopsis() != null || !currentMovie.getMAPlotSynopsis().isEmpty()) {
+                mAPlotSynopsis.setText(currentMovie.getMAPlotSynopsis());
             }
-            if (currentMovie.getmUserRating() != null || !currentMovie.getmUserRating().isEmpty()) {
-                mUserRating.setText(currentMovie.getmUserRating());
+            if (currentMovie.getMUserRating() != null || !currentMovie.getMUserRating().isEmpty()) {
+                mUserRating.setText(currentMovie.getMUserRating());
             }
-            if (currentMovie.getmReleaseDate() != null || !currentMovie.getmReleaseDate().isEmpty()) {
+            if (currentMovie.getMReleaseDate() != null || !currentMovie.getMReleaseDate().isEmpty()) {
 
-                mReleaseDate.setText(currentMovie.getmReleaseDate());
+                mReleaseDate.setText(currentMovie.getMReleaseDate());
             }
         }
+
         mDb = AppDatabase.getsInstance(getApplicationContext());
-        if (currentMovie.getmFav() != 0)
+        currentMovieDB = mDb.movieDAO().loadMovieById(currentMovie.getMId());
+
+        if (currentMovieDB != null)
             mAddFavoriteMovie.setText(R.string.remove_favorite_movie);
 
     }
 
     public void addFavoriteMovie(View view) {
-        MovieEntry currentMovieEntry = new MovieEntry(
-                currentMovie.getmId(),
-                currentMovie.getmOriginalTitle(),
-                currentMovie.getmReleaseDate(),
-                currentMovie.getmPosterImageThumbnail(),
-                currentMovie.getmAPlotSynopsis(),
-                currentMovie.getmUserRating(),
-                1);
-        if (currentMovie.getmFav() == 0) {
-            mDb.movieDAO().insertMovie(currentMovieEntry);
+
+        if (currentMovieDB == null){
+            currentMovie.setMFav(R.bool.add);
+            mDb.movieDAO().insertMovie(currentMovie);
             mAddFavoriteMovie.setText(R.string.remove_favorite_movie);
-            currentMovie.setmFav(1);
-
         } else {
-            mDb.movieDAO().deleteMovie(currentMovieEntry);
+            mDb.movieDAO().deleteMovie(currentMovie);
             mAddFavoriteMovie.setText(getString(R.string.add_favorite_movie));
-            currentMovie.setmFav(0);
-
-
+            currentMovie.setMFav(R.bool.remove);
         }
     }
 }

@@ -17,9 +17,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.az.moviesapp.database.AppDatabase;
-import com.example.android.az.moviesapp.database.MovieEntry;
+import com.example.android.az.moviesapp.database.Movie;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>>, MoviesAdapter.ListItemClickListener {
@@ -27,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private RecyclerView mMovieList;
     private AppDatabase mDb;
+    private MoviesAdapter mAdapter;
 
     /**
      * Constant value for the Movies loader ID. We can choose any integer.
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     /**
      * REQUEST_SECTION URL for movies data from the movies dataset
      */
-    String REQUEST_SECTION = "popular";
+    private static String REQUEST_SECTION = "popular";
     /**
      * if no internet or no data
      */
@@ -59,12 +59,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Find a reference to the {@link TextView} in the layout
         emptyView = findViewById(R.id.tv_empty_view);
         emptyView.setVisibility(View.GONE);
-
         // Get a reference to the LoaderManager, in order to interact with loaders.
         loaderManager = getLoaderManager();
         //initiate the loader by method
         executeLoader(REQUEST_SECTION);
-
     }
 
     /**
@@ -137,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Hide loading indicator because the data has been loaded
         View loadingIndicator = findViewById(R.id.pb_loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
+        MoviesAdapter mAdapter = new MoviesAdapter(this, this);
         if (REQUEST_SECTION != getString(R.string.favorite_menu_item_val)) {
 
             if (data == null || data.isEmpty()) {
@@ -145,31 +144,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 emptyView.setVisibility(View.VISIBLE);
 
             } else {
-                MoviesAdapter mAdapter = new MoviesAdapter(this, this);
                 mAdapter.setmMovieList(data);
-                mMovieList.setAdapter(mAdapter);
             }
         } else {
-            MoviesAdapter mAdapter = new MoviesAdapter(this, this);
             mDb = AppDatabase.getsInstance(getApplicationContext());
-            List<MovieEntry> currentMovieEntry = mDb.movieDAO().loadAllMovie();
-            List<Movie> currentMovie = new ArrayList<>();
-            for (MovieEntry m : currentMovieEntry) {
-                currentMovie.add(new Movie(
-                        m.getMdId(),
-                        m.getMdOriginalTitle(),
-                        m.getMdReleaseDate(),
-                        m.getMdPosterImageThumbnail(),
-                        m.getMdAPlotSynopsis(),
-                        m.getMdUserRating(),
-                        m.getMdFav())
+            List<Movie> currentMovie = mDb.movieDAO().loadAllMovie();
 
-                );
-            }
 
             mAdapter.setmMovieList(currentMovie);
-            mMovieList.setAdapter(mAdapter);
         }
+        mMovieList.setAdapter(mAdapter);
 
     }
 
