@@ -77,7 +77,7 @@ public final class QueryUtils {
                 String userRating = currentMovie.getString("vote_average");
                 // Create a new {@link Movie} object with the mOriginalTitle, mReleaseDate, mPosterImageThumbnail,mAPlotSynopsis
                 // and mUserRating from the JSON movie.
-                Movie movies = new Movie(id,originalTitle,releaseDate,posterImageThumbnail,aPlotSynopsis,userRating);
+                Movie movies = new Movie(id,originalTitle,releaseDate,posterImageThumbnail,aPlotSynopsis,userRating,0);
                 // Add the new {@link Movie} to the list of movies.
                 moviesList.add(movies);
             }

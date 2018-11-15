@@ -11,6 +11,9 @@
     <string name="highest_rated_menu_item">by highest rated</string>
     <string name="highest_rated_menu_item_val" translatable="false">"top_rated"</string>
 
+    <string name="favorite_menu_item">by favorite</string>
+    <string name="favorite_menu_item_val" translatable="false">"favorite"</string>
+
     <string name="order_by_menu_item">order by</string>
 
 
@@ -25,4 +28,8 @@
     <string name="user_rating">User Rating</string>
     <string name="release_date">Release Date</string>
     <string name="movie_poster">MoviePoster</string>
+    <string name="add_favorite_movie">Add to Favorite Movie</string>
+    <string name="remove_favorite_movie">Remove from Favorite Movie</string>
+
+    <string name="my_favorite">My Favorite</string>
 </resources>

@@ -120,6 +120,17 @@
                             android:paddingTop="4dp"
                             android:paddingRight="8dp"
                             android:paddingBottom="8dp" />
+                        <Button
+                            android:id="@+id/add_favorite_movie"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_favorite_movie"
+                            android:paddingLeft="8dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="8dp"
+                            android:paddingBottom="8dp"
+                            android:onClick="addFavoriteMovie"
+                            />
                     </LinearLayout>
                 </LinearLayout>
 

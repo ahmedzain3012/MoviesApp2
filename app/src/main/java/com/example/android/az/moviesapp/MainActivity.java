@@ -16,12 +16,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.android.az.moviesapp.database.AppDatabase;
+import com.example.android.az.moviesapp.database.MovieEntry;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>>, MoviesAdapter.ListItemClickListener {
     private static final int NUM_LIST_COLUMNS = 2;
 
     private RecyclerView mMovieList;
+    private AppDatabase mDb;
+
     /**
      * Constant value for the Movies loader ID. We can choose any integer.
      * This really only comes into play if you're using multiple loaders.
@@ -111,14 +117,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
          * then parse it as Uri
          * the using uri builder fro append format and api_key
          */
-        String REQUEST_URL_SECTION = REQUEST_URL + REQUEST_SECTION;
-        Uri baseUri = Uri.parse(REQUEST_URL_SECTION);
-        Uri.Builder uriBuilder = baseUri.buildUpon();
+        if (REQUEST_SECTION != getString(R.string.favorite_menu_item_val)) {
+            String REQUEST_URL_SECTION = REQUEST_URL + REQUEST_SECTION;
+            Uri baseUri = Uri.parse(REQUEST_URL_SECTION);
+            Uri.Builder uriBuilder = baseUri.buildUpon();
 
-        uriBuilder.appendQueryParameter("format", "json");
-        uriBuilder.appendQueryParameter("api_key", BuildConfig.API_KEY);
-        //return the MoviesLoader by url
-        return new MoviesLoader(this, uriBuilder.toString());
+            uriBuilder.appendQueryParameter("format", "json");
+            uriBuilder.appendQueryParameter("api_key", BuildConfig.API_KEY);
+            //return the MoviesLoader by url
+            return new MoviesLoader(this, uriBuilder.toString());
+        } else {
+            return new MoviesLoader(this, null);
+
+        }
     }
 
     @Override
@@ -126,14 +137,37 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Hide loading indicator because the data has been loaded
         View loadingIndicator = findViewById(R.id.pb_loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
-        if (data == null || data.isEmpty()) {
-            // Set empty state text to display "No movies found."
-            emptyView.setText(R.string.no_data);
-            emptyView.setVisibility(View.VISIBLE);
+        if (REQUEST_SECTION != getString(R.string.favorite_menu_item_val)) {
 
+            if (data == null || data.isEmpty()) {
+                // Set empty state text to display "No movies found."
+                emptyView.setText(R.string.no_data);
+                emptyView.setVisibility(View.VISIBLE);
+
+            } else {
+                MoviesAdapter mAdapter = new MoviesAdapter(this, this);
+                mAdapter.setmMovieList(data);
+                mMovieList.setAdapter(mAdapter);
+            }
         } else {
             MoviesAdapter mAdapter = new MoviesAdapter(this, this);
-            mAdapter.setmMovieList(data);
+            mDb = AppDatabase.getsInstance(getApplicationContext());
+            List<MovieEntry> currentMovieEntry = mDb.movieDAO().loadAllMovie();
+            List<Movie> currentMovie = new ArrayList<>();
+            for (MovieEntry m : currentMovieEntry) {
+                currentMovie.add(new Movie(
+                        m.getMdId(),
+                        m.getMdOriginalTitle(),
+                        m.getMdReleaseDate(),
+                        m.getMdPosterImageThumbnail(),
+                        m.getMdAPlotSynopsis(),
+                        m.getMdUserRating(),
+                        m.getMdFav())
+
+                );
+            }
+
+            mAdapter.setmMovieList(currentMovie);
             mMovieList.setAdapter(mAdapter);
         }
 
@@ -159,6 +193,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 return true;
             case R.id.action_highest_rated:
                 executeLoader(getString(R.string.highest_rated_menu_item_val));
+                return true;
+            case R.id.action_favorite:
+                executeLoader(getString(R.string.favorite_menu_item_val));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

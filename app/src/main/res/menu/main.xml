@@ -16,6 +16,11 @@
                 android:title="@string/highest_rated_menu_item"
                 android:orderInCategory="102"
                 app:showAsAction="never" />
+            <item
+                android:id="@+id/action_favorite"
+                android:title="@string/my_favorite"
+                android:orderInCategory="103"
+                app:showAsAction="never" />
         </menu>
     </item>
 </menu>

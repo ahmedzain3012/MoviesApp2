@@ -10,14 +10,16 @@ public class Movie implements Parcelable {
     private String mPosterImageThumbnail;
     private String mAPlotSynopsis;
     private String mUserRating;
+    private int mFav;
 
-    public Movie(int mId,String mOriginalTitle, String mReleaseDate, String mPosterImageThumbnail, String mAPlotSynopsis, String mUserRating) {
+    public Movie(int mId,String mOriginalTitle, String mReleaseDate, String mPosterImageThumbnail, String mAPlotSynopsis, String mUserRating,int mFav) {
         this.mId = mId;
         this.mOriginalTitle = mOriginalTitle;
         this.mReleaseDate = mReleaseDate;
         this.mPosterImageThumbnail = mPosterImageThumbnail;
         this.mAPlotSynopsis = mAPlotSynopsis;
         this.mUserRating = mUserRating;
+        this.mFav = mFav;
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -39,6 +41,7 @@ public class Movie implements Parcelable {
         mPosterImageThumbnail = in.readString();
         mAPlotSynopsis = in.readString();
         mUserRating = in.readString();
+        mFav = in.readInt();
     }
 
     public int getmId() {
@@ -65,6 +68,14 @@ public class Movie implements Parcelable {
         return mUserRating;
     }
 
+    public int getmFav() {
+        return mFav;
+    }
+
+    public void setmFav(int mFav) {
+        this.mFav = mFav;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -78,6 +89,7 @@ public class Movie implements Parcelable {
         dest.writeString(mPosterImageThumbnail);
         dest.writeString(mAPlotSynopsis);
         dest.writeString(mUserRating);
+        dest.writeInt(mFav);
     }
 
     @Override
@@ -89,6 +101,8 @@ public class Movie implements Parcelable {
                 ", mPosterImageThumbnail='" + mPosterImageThumbnail + '\'' +
                 ", mAPlotSynopsis='" + mAPlotSynopsis + '\'' +
                 ", mUserRating='" + mUserRating + '\'' +
+                ", mFav='" + mFav + '\'' +
+
                 '}';
     }
 }

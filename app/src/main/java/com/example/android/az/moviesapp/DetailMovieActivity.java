@@ -3,9 +3,13 @@ package com.example.android.az.moviesapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.az.moviesapp.database.AppDatabase;
+import com.example.android.az.moviesapp.database.MovieEntry;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -23,6 +27,12 @@ public class DetailMovieActivity extends AppCompatActivity {
     TextView mUserRating;
     @BindView(R.id.tv_release_date)
     TextView mReleaseDate;
+    @BindView(R.id.add_favorite_movie)
+    Button mAddFavoriteMovie;
+
+    private AppDatabase mDb;
+    private Movie currentMovie;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +44,7 @@ public class DetailMovieActivity extends AppCompatActivity {
         //get the intent
         Intent intent = getIntent();
         if (intent.hasExtra("movieParcelable")) {
-            Movie currentMovie = intent.getParcelableExtra("movieParcelable");
+            currentMovie = intent.getParcelableExtra("movieParcelable");
             if (currentMovie.getmOriginalTitle() != null || !currentMovie.getmOriginalTitle().isEmpty()) {
                 mOriginalTitle.setText(currentMovie.getmOriginalTitle());
             }
@@ -57,6 +67,32 @@ public class DetailMovieActivity extends AppCompatActivity {
                 mReleaseDate.setText(currentMovie.getmReleaseDate());
             }
         }
+        mDb = AppDatabase.getsInstance(getApplicationContext());
+        if (currentMovie.getmFav() != 0)
+            mAddFavoriteMovie.setText(R.string.remove_favorite_movie);
 
+    }
+
+    public void addFavoriteMovie(View view) {
+        MovieEntry currentMovieEntry = new MovieEntry(
+                currentMovie.getmId(),
+                currentMovie.getmOriginalTitle(),
+                currentMovie.getmReleaseDate(),
+                currentMovie.getmPosterImageThumbnail(),
+                currentMovie.getmAPlotSynopsis(),
+                currentMovie.getmUserRating(),
+                1);
+        if (currentMovie.getmFav() == 0) {
+            mDb.movieDAO().insertMovie(currentMovieEntry);
+            mAddFavoriteMovie.setText(R.string.remove_favorite_movie);
+            currentMovie.setmFav(1);
+
+        } else {
+            mDb.movieDAO().deleteMovie(currentMovieEntry);
+            mAddFavoriteMovie.setText(getString(R.string.add_favorite_movie));
+            currentMovie.setmFav(0);
+
+
+        }
     }
 }
