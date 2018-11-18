@@ -28,8 +28,10 @@
     <string name="user_rating">User Rating</string>
     <string name="release_date">Release Date</string>
     <string name="movie_poster">MoviePoster</string>
-    <string name="add_favorite_movie">Add to Favorite Movie</string>
-    <string name="remove_favorite_movie">Remove from Favorite Movie</string>
+    <string name="add_favorite_movie">MARK AS FAVORITE</string>
+    <string name="remove_favorite_movie">UNMARK AS A FAVORITE</string>
 
     <string name="my_favorite">My Favorite</string>
+    <string name="author">author</string>
+    <string name="contents">content</string>
 </resources>

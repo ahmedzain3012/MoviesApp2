@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     /**
      * URL for movies data from the movies dataset
      */
-    private static final String REQUEST_URL =
+    public static final String REQUEST_URL =
             "https://api.themoviedb.org/3/movie/";
     /**
      * REQUEST_SECTION URL for movies data from the movies dataset
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         } else {
             mDb = AppDatabase.getsInstance(getApplicationContext());
             List<Movie> currentMovie = mDb.movieDAO().loadAllMovie();
-
+            Log.v("az2222","hi");
 
             mAdapter.setmMovieList(currentMovie);
         }

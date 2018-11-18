@@ -3,14 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -120,17 +119,17 @@
                             android:paddingTop="4dp"
                             android:paddingRight="8dp"
                             android:paddingBottom="8dp" />
+
                         <Button
                             android:id="@+id/add_favorite_movie"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/add_favorite_movie"
+                            android:onClick="addFavoriteMovie"
                             android:paddingLeft="8dp"
                             android:paddingTop="4dp"
                             android:paddingRight="8dp"
                             android:paddingBottom="8dp"
-                            android:onClick="addFavoriteMovie"
-                            />
+                            android:text="@string/add_favorite_movie" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -162,8 +161,39 @@
                     android:paddingTop="4dp"
                     android:paddingRight="8dp"
                     android:paddingBottom="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@android:color/darker_gray" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include layout="@layout/activity_detail_movie_rvt" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include layout="@layout/activity_detail_movie_rvr" />
+                    </LinearLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
+
     </ScrollView>
 </FrameLayout>
