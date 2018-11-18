@@ -84,16 +84,8 @@ public class MovieDetailAdapterTrailer extends RecyclerView.Adapter<MovieDetailA
 
 
         void bind(int listIndex) {
-            MovieDetailTrailer currentMovieDetailTrailer = (MovieDetailTrailer) mMovieDetailTrailerList.get(listIndex);
-            name.setText("Trailer " + listIndex);
+            name.setText("Trailer " +  String.valueOf(listIndex+1));
 
-            // Build the image url
-//            String baseUrl = "http://image.tmdb.org/t/p/w185";
-//            String posterAddress = currentMovieDetailTrailer.getMPosterImageThumbnail();
-//            String url = baseUrl + posterAddress;
-
-            // Display the PosterImageThumbnail of the current movie in that ImageView
-//            Picasso.with(context).load(url).into(posterImage);
         }
 
 
