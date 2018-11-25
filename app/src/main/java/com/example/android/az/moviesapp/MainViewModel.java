@@ -4,7 +4,6 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.android.az.moviesapp.database.AppDatabase;
 import com.example.android.az.moviesapp.database.Movie;
@@ -17,7 +16,6 @@ public class MainViewModel extends AndroidViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
         AppDatabase database = AppDatabase.getsInstance(this.getApplication());
-        Log.d("Zezo","ViewModel");
         movies = database.movieDAO().loadAllMovie();
     }
 

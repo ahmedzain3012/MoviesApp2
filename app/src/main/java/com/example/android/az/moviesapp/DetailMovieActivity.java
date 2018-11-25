@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -33,6 +32,8 @@ import static com.example.android.az.moviesapp.MainActivity.REQUEST_URL;
 public class DetailMovieActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<List<Object>>,
         MovieDetailAdapterTrailer.ListItemClickListener {
+    public static final String LOG_TAG = DetailMovieActivity.class.getName();
+
     // Automatically finds each field by the specified ID.
     @BindView(R.id.tv_original_title)
     TextView mOriginalTitle;
@@ -149,7 +150,6 @@ public class DetailMovieActivity extends AppCompatActivity implements
                 if (movie != null) {
                     currentMovie = movie;
                     mAddFavoriteMovie.setText(R.string.remove_favorite_movie);
-                    Log.d("Zezo", "LiveData2 ViewModel");
                 }
             }
         });
@@ -188,7 +188,6 @@ public class DetailMovieActivity extends AppCompatActivity implements
         Uri baseUri;
         Uri.Builder uriBuilder;
         String REQUEST_URL_SECTION;
-        Log.v("Moaaz2701 : ", String.valueOf(id));
         if (id == MOVIE_TRAILER_LOADER_ID) {
             REQUEST_URL_SECTION = REQUEST_URL + currentMovie.getMId() + "/videos";
         } else {

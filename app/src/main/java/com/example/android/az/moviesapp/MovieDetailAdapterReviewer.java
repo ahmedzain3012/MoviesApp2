@@ -3,7 +3,6 @@ package com.example.android.az.moviesapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,8 +81,6 @@ public class MovieDetailAdapterReviewer extends RecyclerView.Adapter<MovieDetail
             MovieDetailReviewer currentMovieDetailReviewer = (MovieDetailReviewer) mMovieDetailReviewerList.get(listIndex);
             author.setText(currentMovieDetailReviewer.getmAuthor());
             content.setText(currentMovieDetailReviewer.getmContent());
-            Log.v("Leen",currentMovieDetailReviewer.getmAuthor());
-
         }
 
     }

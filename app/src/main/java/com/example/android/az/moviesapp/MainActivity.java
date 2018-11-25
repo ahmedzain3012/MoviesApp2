@@ -14,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +25,8 @@ import com.example.android.az.moviesapp.database.Movie;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>>, MoviesAdapter.ListItemClickListener {
+    public static final String LOG_TAG = MainActivity.class.getName();
+
     private static final int NUM_LIST_COLUMNS = 2;
 
     private RecyclerView mMovieList;
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         emptyView.setVisibility(View.GONE);
 
         mDb = AppDatabase.getsInstance(getApplicationContext());
+
+        mAdapter = new MoviesAdapter(this, this);
 
 
         // Get a reference to the LoaderManager, in order to interact with loaders.
@@ -123,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
          * then parse it as Uri
          * the using uri builder fro append format and api_key
          */
-        if (REQUEST_SECTION != getString(R.string.favorite_menu_item_val)) {
+        if (!REQUEST_SECTION.equals(getString(R.string.favorite_menu_item_val))) {
             String REQUEST_URL_SECTION = REQUEST_URL + REQUEST_SECTION;
             Uri baseUri = Uri.parse(REQUEST_URL_SECTION);
             Uri.Builder uriBuilder = baseUri.buildUpon();
@@ -143,9 +146,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Hide loading indicator because the data has been loaded
         View loadingIndicator = findViewById(R.id.pb_loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
-        final MoviesAdapter mAdapter = new MoviesAdapter(this, this);
-        if (REQUEST_SECTION != getString(R.string.favorite_menu_item_val)) {
-
+        if (!REQUEST_SECTION.equals(getString(R.string.favorite_menu_item_val))) {
             if (data == null || data.isEmpty()) {
                 /* First, hide the currently visible data */
                 mMovieList.setVisibility(View.INVISIBLE);
@@ -158,17 +159,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 mMovieList.setAdapter(mAdapter);
             }
         } else {
-            setupViewModel(mAdapter);
+            setupViewModel();
         }
 
     }
 
-    private void setupViewModel(final MoviesAdapter mAdapter) {
+    private void setupViewModel() {
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(@Nullable List<Movie> movies) {
-                Log.d("Zezo","LiveData in ViewModel");
                 if (movies == null || movies.isEmpty()) {
                     /* First, hide the currently visible data */
                     mMovieList.setVisibility(View.INVISIBLE);
@@ -187,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<List<Movie>> loader) {
+
     }
 
     @Override
