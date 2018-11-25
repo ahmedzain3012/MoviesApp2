@@ -188,29 +188,32 @@ public class DetailMovieActivity extends AppCompatActivity implements
             loadingIndicatorTrailer.setVisibility(View.GONE);
             MovieDetailAdapterTrailer mAdapterTrailer = new MovieDetailAdapterTrailer(this, this);
             if (data == null || data.isEmpty()) {
+                /* First, hide the currently visible data */
+                mMovieListTrailer.setVisibility(View.INVISIBLE);
                 // Set empty state text to display "No movies found."
                 emptyViewTrailer.setText(R.string.no_data_trailer);
                 emptyViewTrailer.setVisibility(View.VISIBLE);
 
             } else {
                 mAdapterTrailer.setmMovieDetailTrailerList(data);
+                mMovieListTrailer.setAdapter(mAdapterTrailer);
             }
-            mMovieListTrailer.setAdapter(mAdapterTrailer);
         } else {
             // Hide loading indicator because the data has been loaded
             View loadingIndicatorReviewer = findViewById(R.id.pb_loading_indicator_reviewer);
             loadingIndicatorReviewer.setVisibility(View.GONE);
             MovieDetailAdapterReviewer mAdapterReviewer = new MovieDetailAdapterReviewer(this);
             if (data == null || data.isEmpty()) {
+                /* First, hide the currently visible data */
+                mMovieListReviewer.setVisibility(View.INVISIBLE);
                 // Set empty state text to display "No movies found."
                 emptyViewReview.setText(R.string.no_data_reviewer);
                 emptyViewReview.setVisibility(View.VISIBLE);
 
             } else {
                 mAdapterReviewer.setmMovieDetailReviewerList(data);
+                mMovieListReviewer.setAdapter(mAdapterReviewer);
             }
-
-            mMovieListReviewer.setAdapter(mAdapterReviewer);
         }
     }
 

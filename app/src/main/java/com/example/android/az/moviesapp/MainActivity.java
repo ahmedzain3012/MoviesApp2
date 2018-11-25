@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -140,21 +139,31 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (REQUEST_SECTION != getString(R.string.favorite_menu_item_val)) {
 
             if (data == null || data.isEmpty()) {
+                /* First, hide the currently visible data */
+                mMovieList.setVisibility(View.INVISIBLE);
+
                 // Set empty state text to display "No movies found."
                 emptyView.setText(R.string.no_data);
                 emptyView.setVisibility(View.VISIBLE);
-
             } else {
                 mAdapter.setmMovieList(data);
+                mMovieList.setAdapter(mAdapter);
             }
         } else {
             mDb = AppDatabase.getsInstance(getApplicationContext());
             List<Movie> currentMovie = mDb.movieDAO().loadAllMovie();
-            Log.v("az2222","hi");
+            if (currentMovie == null || currentMovie.isEmpty()) {
+                /* First, hide the currently visible data */
+                mMovieList.setVisibility(View.INVISIBLE);
 
-            mAdapter.setmMovieList(currentMovie);
+                // Set empty state text to display "No movies found."
+                emptyView.setText(R.string.no_data);
+                emptyView.setVisibility(View.VISIBLE);
+            } else {
+                mAdapter.setmMovieList(currentMovie);
+                mMovieList.setAdapter(mAdapter);
+            }
         }
-        mMovieList.setAdapter(mAdapter);
 
     }
 

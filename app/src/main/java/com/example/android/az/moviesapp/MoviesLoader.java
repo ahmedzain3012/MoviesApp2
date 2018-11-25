@@ -14,6 +14,7 @@ public class MoviesLoader extends AsyncTaskLoader<List<Movie>> {
 
     /** Query URL */
     private String mUrl;
+    List<Movie> movies;
 
     /**
      * Constructs a new {@link MoviesLoader}.
@@ -24,10 +25,14 @@ public class MoviesLoader extends AsyncTaskLoader<List<Movie>> {
     public MoviesLoader(Context context, String url) {
         super(context);
         mUrl = url;
+        movies = null;
     }
 
     @Override
     protected void onStartLoading() {
+        if (movies != null){
+            deliverResult(movies);
+        }
         forceLoad();
     }
 
@@ -41,7 +46,7 @@ public class MoviesLoader extends AsyncTaskLoader<List<Movie>> {
         }
 
         // Perform the network request, parse the response, and extract a list of movies.
-        List<Movie> movies = QueryUtils.fetchMoviesData(mUrl);
+        movies = QueryUtils.fetchMoviesData(mUrl);
         return movies;
     }
 }
