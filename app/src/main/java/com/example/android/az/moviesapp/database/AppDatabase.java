@@ -21,7 +21,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         AppDatabase.class, AppDatabase.DATABASE_NAME)
                         //I have to remove this line for test only
-                        .allowMainThreadQueries()
+//                        .allowMainThreadQueries()
                         .build();
             }
         }

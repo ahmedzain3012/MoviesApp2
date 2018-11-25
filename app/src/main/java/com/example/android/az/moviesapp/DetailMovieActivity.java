@@ -1,6 +1,8 @@
 package com.example.android.az.moviesapp;
 
 import android.app.LoaderManager;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.Loader;
 import android.net.Uri;
@@ -47,7 +49,6 @@ public class DetailMovieActivity extends AppCompatActivity implements
 
     private AppDatabase mDb;
     private Movie currentMovie;
-    private Movie currentMovieDB;
 
     private RecyclerView mMovieListTrailer;
     private MovieDetailAdapterTrailer mAdapterTrailer;
@@ -105,11 +106,7 @@ public class DetailMovieActivity extends AppCompatActivity implements
 
 
         mDb = AppDatabase.getsInstance(getApplicationContext());
-        currentMovieDB = mDb.movieDAO().loadMovieById(currentMovie.getMId());
-
-        if (currentMovieDB != null) {
-            mAddFavoriteMovie.setText(R.string.remove_favorite_movie);
-        }
+        retrieveCurrentMovie();
 
 
         /**
@@ -141,16 +138,45 @@ public class DetailMovieActivity extends AppCompatActivity implements
 
     }
 
+    private void retrieveCurrentMovie() {
+        AddFavoriteMovieViewModelFactory factory = new AddFavoriteMovieViewModelFactory(mDb,currentMovie.getMId());
+        final AddFavoriteMovieViewModel viewModel = ViewModelProviders.of(this,factory).get(AddFavoriteMovieViewModel.class);
+
+        viewModel.getMovie().observe(this, new Observer<Movie>() {
+            @Override
+            public void onChanged(@Nullable Movie movie) {
+                viewModel.getMovie().removeObserver(this);
+                if (movie != null) {
+                    currentMovie = movie;
+                    mAddFavoriteMovie.setText(R.string.remove_favorite_movie);
+                    Log.d("Zezo", "LiveData2 ViewModel");
+                }
+            }
+        });
+    }
+
     public void addFavoriteMovie(View view) {
 
-        if (currentMovieDB == null) {
+        if (currentMovie.getMFav() != R.bool.add) {
             currentMovie.setMFav(R.bool.add);
-            mDb.movieDAO().insertMovie(currentMovie);
-            currentMovieDB = mDb.movieDAO().loadMovieById(currentMovie.getMId());
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mDb.movieDAO().insertMovie(currentMovie);
+                }
+            });
+
+//            retrieveCurrentMovie();
             mAddFavoriteMovie.setText(R.string.remove_favorite_movie);
         } else {
-            mDb.movieDAO().deleteMovie(currentMovie);
-            currentMovieDB = mDb.movieDAO().loadMovieById(currentMovie.getMId());
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mDb.movieDAO().deleteMovie(currentMovie);
+                }
+            });
+
+//            retrieveCurrentMovie();
             mAddFavoriteMovie.setText(getString(R.string.add_favorite_movie));
             currentMovie.setMFav(R.bool.remove);
         }

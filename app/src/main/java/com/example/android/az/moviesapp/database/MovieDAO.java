@@ -1,5 +1,6 @@
 package com.example.android.az.moviesapp.database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface MovieDAO {
 
     @Query("SELECT * FROM movie")
-    List<Movie> loadAllMovie();
+    LiveData<List<Movie>> loadAllMovie();
 
     @Insert
     void insertMovie(Movie movie);
@@ -25,6 +26,6 @@ public interface MovieDAO {
     void deleteMovie(Movie movie);
 
     @Query("SELECT * FROM movie WHERE mid = :id")
-    Movie loadMovieById(int id);
+    LiveData<Movie> loadMovieById(int id);
 
 }

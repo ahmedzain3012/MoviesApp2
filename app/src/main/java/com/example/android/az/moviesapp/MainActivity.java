@@ -1,6 +1,8 @@
 package com.example.android.az.moviesapp;
 
 import android.app.LoaderManager;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
@@ -8,9 +10,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Find a reference to the {@link TextView} in the layout
         emptyView = findViewById(R.id.tv_empty_view);
         emptyView.setVisibility(View.GONE);
+
+        mDb = AppDatabase.getsInstance(getApplicationContext());
+
+
         // Get a reference to the LoaderManager, in order to interact with loaders.
         loaderManager = getLoaderManager();
         //initiate the loader by method
@@ -135,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Hide loading indicator because the data has been loaded
         View loadingIndicator = findViewById(R.id.pb_loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
-        MoviesAdapter mAdapter = new MoviesAdapter(this, this);
+        final MoviesAdapter mAdapter = new MoviesAdapter(this, this);
         if (REQUEST_SECTION != getString(R.string.favorite_menu_item_val)) {
 
             if (data == null || data.isEmpty()) {
@@ -150,21 +158,31 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 mMovieList.setAdapter(mAdapter);
             }
         } else {
-            mDb = AppDatabase.getsInstance(getApplicationContext());
-            List<Movie> currentMovie = mDb.movieDAO().loadAllMovie();
-            if (currentMovie == null || currentMovie.isEmpty()) {
-                /* First, hide the currently visible data */
-                mMovieList.setVisibility(View.INVISIBLE);
-
-                // Set empty state text to display "No movies found."
-                emptyView.setText(R.string.no_data);
-                emptyView.setVisibility(View.VISIBLE);
-            } else {
-                mAdapter.setmMovieList(currentMovie);
-                mMovieList.setAdapter(mAdapter);
-            }
+            setupViewModel(mAdapter);
         }
 
+    }
+
+    private void setupViewModel(final MoviesAdapter mAdapter) {
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(@Nullable List<Movie> movies) {
+                Log.d("Zezo","LiveData in ViewModel");
+                if (movies == null || movies.isEmpty()) {
+                    /* First, hide the currently visible data */
+                    mMovieList.setVisibility(View.INVISIBLE);
+
+                    // Set empty state text to display "No movies found."
+                    emptyView.setText(R.string.no_data);
+                    emptyView.setVisibility(View.VISIBLE);
+                } else {
+                    mAdapter.setmMovieList(movies);
+                    mMovieList.setAdapter(mAdapter);
+                }
+
+            }
+        });
     }
 
     @Override
